@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Emulator",
+      "type": "shell",
+      "command": "start \"\" \"${env:ANDROID_SDK_ROOT}\\emulator\\emulator.exe\" -avd Pixel_9_Pro -no-snapshot-load -gpu swiftshader_indirect",
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "Build APK",
+      "type": "shell",
+      "command": ".\\gradlew.bat assembleDebug",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": ["$msCompile"],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Install & Run",
+      "type": "shell",
+      "command": "& \"E:\\Sdk\\platform-tools\\adb.exe\" devices ; while(-not ((& \"E:\\Sdk\\platform-tools\\adb.exe\" devices) -match \"\\temulator-\\d+\\s+device\")){ Start-Sleep -Seconds 1 } ; while(((& \"E:\\Sdk\\platform-tools\\adb.exe\" shell getprop sys.boot_completed 2>$null).Trim()) -ne '1'){ Start-Sleep -Seconds 2 } ; & \"E:\\Sdk\\platform-tools\\adb.exe\" install -r \"app\\build\\outputs\\apk\\debug\\app-debug.apk\" ; & \"E:\\Sdk\\platform-tools\\adb.exe\" shell am start -n com.maxmudbek.orderqueue/.MainActivity",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+          "args": ["-NoProfile", "-Command"]
+        }
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" }
+    },
+    {
+      "label": "Run On Emulator (compound)",
+      "dependsOn": ["Start Emulator", "Build APK", "Install & Run"],
+      "dependsOrder": "sequence"
+    }
+  ]
+}
