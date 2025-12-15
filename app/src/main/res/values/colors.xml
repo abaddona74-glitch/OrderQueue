@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    
+    <color name="bg_color">#F4F6F6</color>
+    <color name="text_primary">#2E3642</color>
+    <color name="text_secondary">#66707F</color>
+    <color name="progress_bg">#E2E5E9</color>
+    <color name="primary_green">#37B98B</color>
+    <color name="warning_yellow">#FFC107</color>
+    <color name="error_red">#F9465A</color>
+    <color name="overload_red">#A60A36</color>
+    <color name="text_disabled">#B4BDCA</color>
+    <color name="error_border">#33F9465A</color>
 </resources>

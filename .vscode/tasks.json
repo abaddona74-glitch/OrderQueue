@@ -19,12 +19,12 @@
     {
       "label": "Install & Run",
       "type": "shell",
-      "command": "& \"E:\\Sdk\\platform-tools\\adb.exe\" devices ; while(-not ((& \"E:\\Sdk\\platform-tools\\adb.exe\" devices) -match \"\\temulator-\\d+\\s+device\")){ Start-Sleep -Seconds 1 } ; while(((& \"E:\\Sdk\\platform-tools\\adb.exe\" shell getprop sys.boot_completed 2>$null).Trim()) -ne '1'){ Start-Sleep -Seconds 2 } ; & \"E:\\Sdk\\platform-tools\\adb.exe\" install -r \"app\\build\\outputs\\apk\\debug\\app-debug.apk\" ; & \"E:\\Sdk\\platform-tools\\adb.exe\" shell am start -n com.maxmudbek.orderqueue/.MainActivity",
+      "command": "${workspaceFolder}\\.vscode\\install_and_run.ps1 \"${workspaceFolder}\"",
       "options": {
         "cwd": "${workspaceFolder}",
         "shell": {
           "executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-          "args": ["-NoProfile", "-Command"]
+          "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File"]
         }
       },
       "problemMatcher": [],
