@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +30,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import com.maxmudbek.orderqueue.ui.HostGrotesk
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -68,13 +70,16 @@ fun MainScreen(viewModel: OrderViewModel) {
             colors = CardDefaults.cardColors(containerColor = colorResource(id = R.color.white))
         ) {
             Column(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Order Queue Outpost",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.SemiBold,
+                    fontFamily = HostGrotesk,
                     color = colorResource(id = R.color.text_primary),
                     textAlign = TextAlign.Center
                 )
@@ -101,12 +106,14 @@ fun MainScreen(viewModel: OrderViewModel) {
                                 text = "Queue: $queueSize/25",
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Medium,
+                                fontFamily = HostGrotesk,
                                 color = colorResource(id = R.color.text_primary)
                             )
                             Text(
                                 text = "$percentInt%",
                                 fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium,
+                                fontWeight = FontWeight.Normal,
+                                fontFamily = HostGrotesk,
                                 color = if (isOverload) colorResource(id = R.color.overload_red) else colorResource(id = R.color.text_secondary)
                             )
                         }
@@ -188,8 +195,9 @@ fun MainScreen(viewModel: OrderViewModel) {
                                 }
                             }
 
-                            // 100% marker when overloaded
+                            // 100% marker when overloaded (with 6.dp top margin)
                             if (isOverload) {
+                                Spacer(modifier = Modifier.height(6.dp))
                                 BoxWithConstraints(
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -202,6 +210,7 @@ fun MainScreen(viewModel: OrderViewModel) {
                                             text = "100%",
                                             fontSize = 13.sp,
                                             fontWeight = FontWeight.Medium,
+                                            fontFamily = HostGrotesk,
                                             color = colorResource(id = R.color.text_disabled)
                                         )
                                     }
@@ -213,30 +222,40 @@ fun MainScreen(viewModel: OrderViewModel) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Button
+                // Button (103x44 per Figma). Primary when starting, Surface-Highest when paused
                 Button(
                     onClick = { viewModel.toggleProcessing() },
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(44.dp),
+                        .width(103.dp)
+                        .height(44.dp)
+                        .align(Alignment.CenterHorizontally),
                     shape = RoundedCornerShape(12.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = colorResource(id = R.color.progress_bg)
+                        containerColor = if (isProcessing) colorResource(id = R.color.surface_highest) else colorResource(id = R.color.primary_green)
                     )
                 ) {
-                    val icon = if (isProcessing) R.drawable.ic_pause else R.drawable.ic_play
-                    Icon(
-                        painter = painterResource(id = icon),
-                        contentDescription = null,
-                        tint = colorResource(id = R.color.text_primary)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = if (isProcessing) "Pause" else "Start",
-                        color = colorResource(id = R.color.text_primary),
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        val icon = if (isProcessing) R.drawable.ic_pause else R.drawable.ic_play
+                        Icon(
+                            painter = painterResource(id = icon),
+                            contentDescription = null,
+                            tint = if (isProcessing) colorResource(id = R.color.text_primary) else colorResource(id = R.color.surface_higher),
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (isProcessing) "Pause" else "Start",
+                            color = if (isProcessing) colorResource(id = R.color.text_primary) else colorResource(id = R.color.surface_higher),
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = HostGrotesk
+                        )
+                    }
                 }
             }
         }
